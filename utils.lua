@@ -34,3 +34,17 @@ end
 function areRectanglesOverlapping(x1, y1, x2, y2, x3, y3, x4, y4)
     return not (x3 > x2 or x4 < x1 or y3 > y2 or y4 < y1)
 end
+
+function createIrregularPolygon(size, point_amount)
+    local point_amount = point_amount or 8
+    local points = {}
+    for i = 1, point_amount do
+        local angle_interval = 2*math.pi/point_amount
+        local s = size + random(-size/4, size/4)
+        local angle = (i-1)*angle_interval + random(-angle_interval/4, angle_interval/4)
+        table.insert(points, s*math.cos(angle))
+        table.insert(points, s*math.sin(angle))
+    end
+    return points
+end
+

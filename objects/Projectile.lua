@@ -30,6 +30,16 @@ function Projectile:update(dt)
     if self.y > global_height then 
         self:die() 
     end
+
+    if self.collider:enter('Enemy') then
+        local collision_data = self.collider:getEnterCollisionData('Enemy')
+        local object = collision_data.collider:getObject()
+
+        if object then
+            object:hit(self.damage)
+            self:die()
+        end
+    end
 end
 
 function Projectile:draw()

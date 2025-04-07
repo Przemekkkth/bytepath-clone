@@ -5,13 +5,17 @@ function Stage:new()
     self.area:addPhysicsWorld()
 
     self.area.world:addCollisionClass('Player')
+    self.area.world:addCollisionClass('Enemy')
     self.area.world:addCollisionClass('Projectile', {ignores = {'Projectile', 'Player'}})
     self.area.world:addCollisionClass('Collectable', {ignores = {'Collectable', 'Projectile'}})
+    self.area.world:addCollisionClass('EnemyProjectile', {ignores = {'EnemyProjectile', 'Projectile', 'Enemy'}})
 
     self.main_canvas = love.graphics.newCanvas(global_width, global_height)
     self.player = self.area:addGameObject('Player', global_width / 2, global_height / 2)
     input:bind('p', function() self.area:addGameObject('Boost', 0, 0) end)
     input:bind('o', function() self.area:addGameObject('Ammo', 0, 0) end)
+    input:bind('r', function() self.area:addGameObject('Rock', 110, 110) end)
+    input:bind('s', function() self.area:addGameObject('Shooter', 222, 110) end)
 end
 
 function Stage:update(dt)
