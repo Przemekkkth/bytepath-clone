@@ -303,6 +303,7 @@ function Player:die()
     for i = 1, love.math.random(8, 12) do
         self.area:addGameObject('ExplodeParticle', self.x, self.y)
     end
+    current_room:finish()
 end
 
 function Player:setAttack(attack)
@@ -313,19 +314,26 @@ end
 
 function Player:addAmmo(amount)
     self.ammo = math.min(self.ammo + amount, self.max_ammo)
+    current_room.score = current_room.score + 50
 end
 
 function Player:hit(damage)
-    if self.invincible then return end
+    if self.invincible then 
+        return 
+    end
     damage = damage or 10
 
-    for i = 1, love.math.random(4, 8) do self.area:addGameObject('ExplodeParticle', self.x, self.y) end
+    for i = 1, love.math.random(4, 8) do 
+        self.area:addGameObject('ExplodeParticle', self.x, self.y) 
+    end
     self:removeHP(damage)
 
     if damage >= 30 then
         self.invincible = true
-        self.timer:after('invincibility', 2, function() self.invincible = false end)
-        for i = 1, 50 do self.timer:after((i-1)*0.04, function() self.invisible = not self.invisible end) end
+        self.timer:after(2, function() self.invincible = false end)
+        for i = 1, 50 do 
+            self.timer:after((i-1)*0.04, function() self.invisible = not self.invisible end) 
+        end
         self.timer:after(51*0.04, function() self.invisible = false end)
 
         --camera:shake(6, 60, 0.2)
